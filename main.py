@@ -18,23 +18,22 @@ app.include_router(blog_post.router)
 def index():
     return {"message": "Hello world!"}
 
+
 @app.exception_handler(StoryException)
 def story_exception_handler(request: Request, exc: StoryException):
     return JSONResponse(
-            status_code=status.HTTP_418_IM_A_TEAPOT,
-            content={"detail": exc.name}
-            )
+        status_code=status.HTTP_418_IM_A_TEAPOT, content={"detail": exc.name}
+    )
+
 
 models.Base.metadata.create_all(engine)
 
-origins = [
-        "http://localhost:3000"
-        ]
+origins = ["http://localhost:3000"]
 
 app.add_middleware(
-        CORSMiddleware,
-        allow_origins = origins,
-        allow_credentials = True,
-        allow_methods = ['*'],
-        allow_headers = ['*']
-        )
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
