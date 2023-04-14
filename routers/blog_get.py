@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, status, Response
 from routers.blog_post import required_functionality
 from enum import Enum
 from typing import Optional
+from custom_log import log
 
 router = APIRouter(prefix="/blog", tags=["blog"])
 
@@ -17,6 +18,7 @@ def get_all_blogs(
     page_size: Optional[int] = None,
     req_parameter: dict = Depends(required_functionality),
 ):
+    log("MyAPI", "Call to get all blogs")
     return {
         "message": f"All {page_size} blogs on page {page}, req = {req_parameter}"
     }
