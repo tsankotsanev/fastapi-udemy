@@ -1,10 +1,12 @@
+from datetime import datetime, timedelta
+from typing import Optional
+
 from fastapi import Depends, status
 from fastapi.exceptions import HTTPException
 from fastapi.security import OAuth2PasswordBearer
-from typing import Optional
-from datetime import datetime, timedelta
 from jose import jwt
 from sqlalchemy.orm.session import Session
+
 from db import db_user
 from db.database import get_db
 
@@ -37,10 +39,10 @@ def get_current_user(
     )
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        username: str = payload.get("sub")
+        username = payload.get("sub")
         if username is None:
             raise credentials_exception
-    except:
+    except Exception:
         raise credentials_exception
 
     user = db_user.get_user_by_username(db, username)

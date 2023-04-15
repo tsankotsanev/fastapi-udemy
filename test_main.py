@@ -16,7 +16,7 @@ def test_auth_failure():
         data={"username": "", "password": ""},
     )
     access_token = response.json().get("access_token")
-    assert access_token == None
+    assert access_token is None
     message = response.json().get("detail")[0].get("msg")
     assert message == "field required"
 
@@ -31,7 +31,9 @@ def test_auth_success():
 
 
 def test_create_article():
-    auth = client.post("/token", data={"username": "user", "password": "password"})
+    auth = client.post(
+        "/token", data={"username": "user", "password": "password"}
+    )
     access_token = auth.json().get("access_token")
     assert access_token
 
