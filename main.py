@@ -1,14 +1,20 @@
-from fastapi import FastAPI, Request, status
+from fastapi import FastAPI
+from fastapi import Request
+from fastapi.exceptions import HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import PlainTextResponse
 from fastapi.responses import JSONResponse
-from exceptions import StoryException
-from routers import blog_get, blog_post, user, article, product, file
+from fastapi.staticfiles import StaticFiles
+
 from auth import authentication
 from db import models
 from db.database import engine
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
+from exceptions import StoryException
+from routers import article, blog_get, blog_post, file, product, user
+from templates import templates
 
 app = FastAPI()
+app.include_router(templates.router)
 app.include_router(authentication.router)
 app.include_router(file.router)
 app.include_router(user.router)
@@ -25,10 +31,12 @@ def index():
 
 @app.exception_handler(StoryException)
 def story_exception_handler(request: Request, exc: StoryException):
-    return JSONResponse(
-        status_code=status.HTTP_418_IM_A_TEAPOT, content={"detail": exc.name}
-    )
+    return JSONResponse(status_code=418, content={"detail": exc.name})
 
+
+@app.exception_handler(HTTPException)
+def custom_handler(request: Request, exc: StoryException):
+  return PlainTextResponse(str(exc), status_code=400)
 
 models.Base.metadata.create_all(engine)
 
@@ -42,4 +50,5 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.mount("/files", StaticFiles(directory=("files")), name="files")
+app.mount("/files", StaticFiles(directory="files"), name="files")
+app.mount("/templates/static", StaticFiles(directory="templates/static"), name="static")

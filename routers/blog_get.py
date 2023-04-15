@@ -19,9 +19,7 @@ def get_all_blogs(
     req_parameter: dict = Depends(required_functionality),
 ):
     log("MyAPI", "Call to get all blogs")
-    return {
-        "message": f"All {page_size} blogs on page {page}, req = {req_parameter}"
-    }
+    return {"message": f"All {page_size} blogs on page {page}, req = {req_parameter}"}
 
 
 @router.get("/{id}/comments/{comment_id}", tags=["comment"])

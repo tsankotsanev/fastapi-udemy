@@ -1,1 +1,1 @@
-MyAPI: Call to get all blogs
+MyAPI: Call to get all products
