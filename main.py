@@ -14,12 +14,21 @@ from client import html
 from db import models
 from db.database import engine
 from exceptions import StoryException
-from routers import article, blog_get, blog_post, file, product, user
+from routers import (
+    article,
+    blog_get,
+    blog_post,
+    dependencies,
+    file,
+    product,
+    user,
+)
 from templates import templates
 
 
 app = FastAPI()
 routers = [
+    dependencies,
     templates,
     authentication,
     file,

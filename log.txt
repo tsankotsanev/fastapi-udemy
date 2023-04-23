@@ -1,1 +1,5 @@
 MyAPI: Call to get all blogs
+MyApp: no message
+	http://localhost:8000/dependencies/user?name=123&email=456
+MyApp: no message
+	http://localhost:8000/dependencies/new?sep=--
